@@ -1,0 +1,68 @@
+:root{
+  --bg:#0f1724;
+  --card:#0f1728;
+  --accent1:#6EE7B7;
+  --accent2:#60A5FA;
+}
+
+*{
+  box-sizing:border-box;
+  font-family:Inter, sans-serif;
+}
+
+body{
+  margin:0;
+  background:var(--bg);
+  color:#fff;
+}
+
+header{
+  display:flex;
+  justify-content:space-between;
+  padding:15px 25px;
+  background:#071426;
+}
+
+.logo{
+  background:var(--accent2);
+  padding:10px;
+  border-radius:8px;
+}
+
+.btn{
+  background:var(--accent1);
+  border:none;
+  padding:8px 12px;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.btn.alt{
+  background:var(--accent2);
+}
+
+.btn-outline{
+  background:transparent;
+  border:1px solid #ccc;
+  color:#fff;
+  padding:8px;
+}
+
+.container{
+  padding:20px;
+}
+
+.card{
+  background:var(--card);
+  padding:15px;
+  border-radius:10px;
+}
+
+.list{
+  margin-top:10px;
+}
+
+.row{
+  padding:10px;
+  border-bottom:1px solid #333;
+}
