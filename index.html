@@ -3,11 +3,95 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>MediCore</title>
-
+<title>MediCore — Migrant Workers (SDG)</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
-
+<style>
+  :root{
+    --bg:#0f1724;
+    --panel:#0b1220;
+    --card:#0f1728;
+    --muted:#9aa4b2;
+    --accent1:#6EE7B7;
+    --accent2:#60A5FA;
+    --accent3:#F472B6;
+    --glass: rgba(255,255,255,0.04);
+  }
+  *{box-sizing:border-box;font-family:Inter,system-ui,Arial,sans-serif}
+  html,body{height:100%;margin:0;background:linear-gradient(180deg,#071025 0%, #081426 45%, #071022 100%);color:#e6eef8}
+  a{color:var(--accent2);text-decoration:none}
+  header{display:flex;align-items:center;justify-content:space-between;padding:18px 28px;background:linear-gradient(90deg,#042a3a,#072b46);box-shadow:0 6px 30px rgba(2,6,23,.6);position:sticky;top:0;z-index:60}
+  header .brand{display:flex;align-items:center;gap:12px}
+  .logo{width:46px;height:46px;border-radius:10px;background:linear-gradient(135deg,var(--accent2),var(--accent1));display:flex;align-items:center;justify-content:center;font-weight:700;color:#031426}
+  header h1{margin:0;font-size:16px;font-weight:600}
+  header .hdr-actions{display:flex;gap:10px;align-items:center}
+  .btn{background:linear-gradient(90deg,var(--accent2),var(--accent1));border:0;color:#031426;padding:8px 12px;border-radius:10px;cursor:pointer;font-weight:600;box-shadow:0 6px 18px rgba(6,12,30,.35)}
+  .btn-outline{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--accent1);padding:8px 12px;border-radius:10px;cursor:pointer}
+  .container{max-width:1180px;margin:22px auto;padding:12px}
+  .grid{display:grid;grid-template-columns:1fr 360px;gap:18px}
+  .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));border-radius:14px;padding:14px;box-shadow:0 8px 30px rgba(2,6,23,.6);border:1px solid rgba(255,255,255,0.03)}
+  .hero{display:flex;align-items:center;gap:16px}
+  .hero h2{margin:0;font-size:20px}
+  .muted{color:var(--muted);font-size:13px}
+  .searchbar{display:flex;gap:10px;margin-top:12px}
+  input[type=text],select,textarea{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:10px;border-radius:10px;color:#e6eef8;outline:none}
+  .list{max-height:520px;overflow:auto;padding:8px}
+  .row{display:flex;justify-content:space-between;align-items:center;padding:12px;border-radius:10px;transition:all .18s}
+  .row:hover{transform:translateY(-4px);box-shadow:0 8px 30px rgba(2,6,23,.6);background:linear-gradient(90deg,#071126, #07132a)}
+  .pill{background:linear-gradient(90deg,var(--accent2),var(--accent1));color:#04202a;padding:6px 10px;border-radius:999px;font-weight:700}
+  .chip{display:inline-block;padding:6px 10px;border-radius:999px;background:var(--glass);color:var(--muted);font-weight:600;margin-right:8px}
+  .mini{font-size:12px;color:var(--muted)}
+  aside .card{position:sticky;top:96px}
+  footer{max-width:1180px;margin:30px auto;color:var(--muted);font-size:13px;text-align:center}
+  /* patient full page */
+  .page{max-width:980px;margin:28px auto;padding:18px}
+  .patient-header{display:flex;gap:16px;align-items:center}
+  .avatar{width:92px;height:92px;border-radius:14px;background:linear-gradient(135deg,var(--accent3),var(--accent2));display:flex;align-items:center;justify-content:center;font-weight:800;color:#081426;font-size:28px}
+  .profile-badges{margin-top:8px}
+  .section{margin-top:16px;padding:14px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.015), transparent);border:1px solid rgba(255,255,255,0.02)}
+  .kpi{display:flex;gap:12px}
+  .kpi .item{flex:1;padding:12px;border-radius:10px;background:linear-gradient(90deg,rgba(255,255,255,0.02),transparent);text-align:center}
+  .kpi .num{font-weight:800;font-size:18px}
+  .backlink{color:#9fd3ff;cursor:pointer;font-weight:700}
+  /* modal */
+  .modal-backdrop{position:fixed;inset:0;background:linear-gradient(rgba(2,6,23,.5),rgba(2,6,23,.6));display:none;align-items:center;justify-content:center;z-index:999}
+  .modal{width:720px;background:linear-gradient(180deg,#071227,#071426);border-radius:12px;padding:18px;border:1px solid rgba(255,255,255,0.04)}
+  .form-row{display:flex;gap:10px}
+  .small-muted{font-size:13px;color:var(--muted)}
+  /* NEW STYLES FOR ADDED FEATURES */
+  .notification-badge{background:var(--accent3);color:#fff;border-radius:50%;width:18px;height:18px;font-size:11px;display:flex;align-items:center;justify-content:center;position:absolute;top:-5px;right:-5px}
+  .notification-icon{position:relative}
+  .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
+  .stat-card{background:linear-gradient(135deg,var(--glass),transparent);padding:14px;border-radius:10px;text-align:center}
+  .stat-value{font-weight:800;font-size:22px;margin:6px 0}
+  .stat-label{font-size:12px;color:var(--muted)}
+  .progress-bar{height:8px;background:var(--glass);border-radius:4px;overflow:hidden;margin-top:8px}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--accent2),var(--accent1));border-radius:4px}
+  .medication-item{display:flex;justify-content:space-between;align-items:center;padding:10px;border-radius:8px;background:var(--glass);margin-bottom:8px}
+  .medication-name{font-weight:600}
+  .medication-dosage{font-size:12px;color:var(--muted)}
+  .urgent{color:var(--accent3);font-weight:700}
+  .timeline{position:relative;padding-left:20px;margin-top:12px}
+  .timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--accent2)}
+  .timeline-item{position:relative;margin-bottom:16px}
+  .timeline-item::before{content:'';position:absolute;left:-24px;top:6px;width:10px;height:10px;border-radius:50%;background:var(--accent1)}
+  .timeline-date{font-size:12px;color:var(--muted)}
+  .timeline-content{font-size:14px}
+  .chat-container{height:300px;display:flex;flex-direction:column;border:1px solid rgba(255,255,255,0.06);border-radius:10px;overflow:hidden}
+  .chat-messages{flex:1;padding:12px;overflow-y:auto;display:flex;flex-direction:column;gap:8px}
+  .chat-message{padding:8px 12px;border-radius:10px;max-width:80%;font-size:14px}
+  .message-sent{align-self:flex-end;background:linear-gradient(90deg,var(--accent2),var(--accent1));color:#031426}
+  .message-received{align-self:flex-start;background:var(--glass)}
+  .chat-input{display:flex;padding:10px;border-top:1px solid rgba(255,255,255,0.06)}
+  .chat-input input{flex:1;background:transparent;border:none;color:#e6eef8;padding:8px}
+  .chat-input button{background:var(--accent2);border:none;color:#031426;padding:8px 12px;border-radius:8px;cursor:pointer;margin-left:8px}
+  .emergency-btn{background:linear-gradient(90deg,var(--accent3),#ff6b6b)!important;animation:pulse 2s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(244,114,182,0.4)}70%{box-shadow:0 0 0 10px rgba(244,114,182,0)}100%{box-shadow:0 0 0 0 rgba(244,114,182,0)}}
+  .export-options{display:flex;gap:8px;margin-top:12px}
+  .export-btn{flex:1;text-align:center;padding:10px;border-radius:8px;background:var(--glass);cursor:pointer;transition:all 0.2s}
+  .export-btn:hover{background:rgba(255,255,255,0.08)}
+  /* responsive */
+  @media(max-width:980px){ .grid{grid-template-columns:1fr} aside .card{position:static;top:auto} .hero{flex-direction:column;align-items:flex-start} .patient-header{flex-direction:column;align-items:flex-start} .avatar{width:72px;height:72px} .modal{width:94%} .stats-grid{grid-template-columns:1fr} }
+</style>
 </head>
 <body>
 
@@ -16,25 +100,1264 @@
     <div class="logo">D</div>
     <div>
       <h1>MediCore</h1>
-      <div class="muted">For Migrant Workers</div>
+      <div class="muted" style="font-size:12px">For Migrant Workers</div>
     </div>
   </div>
 
   <div class="hdr-actions">
     <button id="doctorBtn" class="btn">Doctor Login</button>
-    <button id="patientBtn" class="btn alt">Patient Login</button>
+    <button id="patientBtn" class="btn" style="background:linear-gradient(90deg,var(--accent3),var(--accent2))">Patient Login</button>
+    <div class="notification-icon">
+      <button id="notificationsBtn" class="btn-outline">Notifications</button>
+      <div id="notificationCount" class="notification-badge" style="display:none">0</div>
+    </div>
+    <button id="emergencyBtn" class="btn emergency-btn">Emergency</button>
     <button id="resetBtn" class="btn-outline">Reset</button>
   </div>
 </header>
 
-<main class="container">
-  <div class="card">
-    <h2>Dashboard</h2>
-    <input id="search" type="text" placeholder="Search patients..." />
-    <div id="patientList" class="list"></div>
-  </div>
+<!-- MAIN SPA CONTAINER -->
+<main id="app">
+  <!-- Dashboard view -->
+  <section id="dashboard" class="container">
+    <div class="card hero">
+      <div style="flex:1">
+        <h2>Welcome — Digital Health Record Management</h2>
+
+        <div class="searchbar" style="margin-top:12px">
+          <input id="patientSearch" type="text" placeholder="Search patients by name, disease or history..." />
+          <select id="filterDisease" style="width:180px">
+            <option value="">All diseases</option>
+          </select>
+          <select id="sortBy" style="width:140px">
+            <option value="name">Sort: Name</option>
+            <option value="age">Sort: Age</option>
+            <option value="disease">Sort: Disease</option>
+          </select>
+        </div>
+      </div>
+      <div style="width:320px">
+        <div style="display:flex;gap:10px;align-items:center">
+          <div style="flex:1">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NEW: Stats Overview -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Total Patients</div>
+        <div class="stat-value" id="totalPatientsStat">20</div>
+        <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Active Appointments</div>
+        <div class="stat-value" id="activeAppointmentsStat">0</div>
+        <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Doctors Available</div>
+        <div class="stat-value" id="doctorsAvailableStat">10</div>
+        <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+      </div>
+    </div>
+
+    <div class="grid" style="margin-top:18px">
+      <div>
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <h3 style="margin:0">Patients</h3>
+            <button id="addPatientBtn" class="btn-outline">+ Add New</button>
+          </div>
+
+          <div class="list" id="patientList" style="margin-top:10px"></div>
+        </div>
+
+        <div class="card" style="margin-top:14px">
+          <h3 style="margin:0">Appointments</h3>
+          <div id="appointmentsList" class="list" style="margin-top:8px"></div>
+        </div>
+
+        <div class="card" style="margin-top:14px;display:flex;gap:12px;align-items:center;justify-content:space-between">
+          <div>
+            <div class="muted">Quick stats</div>
+            <div style="margin-top:6px;font-weight:700;font-size:18px" id="totalPatients">20 Patients</div>
+          </div>
+          <div>
+            <button id="viewAllPatients" class="btn-outline">View All</button>
+          </div>
+        </div>
+      </div>
+
+      <aside>
+        <div class="card">
+          <h3 style="margin:0">Doctors</h3>
+          <div id="doctorsList" class="list" style="margin-top:12px"></div>
+        </div>
+
+        <div class="card" style="margin-top:14px">
+          <h3 style="margin:0">Actions</h3>
+          <div class="small-muted" style="margin-top:8px">Quick access</div>
+          <div style="margin-top:12px;display:flex;flex-direction:column;gap:8px">
+            <button id="viewAllDoctors" class="btn-outline">View All Doctors</button>
+            <button id="exportState" class="btn-outline">Export Demo State</button>
+            <button id="medicationBtn" class="btn-outline">Medication Tracker</button>
+            <button id="analyticsBtn" class="btn-outline">Analytics</button>
+          </div>
+        </div>
+
+        <!-- NEW: Recent Activity Timeline -->
+        <div class="card" style="margin-top:14px">
+          <h3 style="margin:0">Recent Activity</h3>
+          <div class="timeline" id="recentActivity">
+            <div class="timeline-item">
+              <div class="timeline-date">Just now</div>
+              <div class="timeline-content">System initialized</div>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+  </section>
+
+  <!-- Patient full profile page (rendered by JS, shown when hash route active) -->
+  <section id="patientPage" class="page" style="display:none">
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div style="display:flex;gap:12px;align-items:center" class="patient-header">
+          <div class="avatar" id="p_avatar">P</div>
+          <div>
+            <div style="display:flex;align-items:center;gap:10px">
+              <h2 id="p_name" style="margin:0">Patient Name</h2>
+              <div class="muted" id="p_id">(P1)</div>
+            </div>
+            <div class="profile-badges" id="p_badges"></div>
+            <div class="muted" id="p_summary" style="margin-top:8px">Short summary / migrant origin etc.</div>
+          </div>
+        </div>
+
+        <div style="text-align:right">
+          <div class="muted">Profile view</div>
+          <div style="margin-top:8px"><span class="backlink" id="backDashboard">&larr; Back to Dashboard</span></div>
+        </div>
+      </div>
+
+      <div class="kpi" style="margin-top:16px">
+        <div class="item kpi-item">
+          <div class="num" id="k_age">Age</div>
+          <div class="muted small">Age</div>
+        </div>
+        <div class="item kpi-item">
+          <div class="num" id="k_disease">-</div>
+          <div class="muted small">Condition</div>
+        </div>
+        <div class="item kpi-item">
+          <div class="num" id="k_app">0</div>
+          <div class="muted small">Appointments</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 340px;gap:14px;margin-top:16px">
+        <div>
+          <div class="section">
+            <div style="display:flex;justify-content:space-between;align-items:center"><strong>Contact & Address</strong></div>
+            <div style="margin-top:8px" id="p_contact"></div>
+            <div class="muted" id="p_address" style="margin-top:8px"></div>
+          </div>
+
+          <div class="section" style="margin-top:12px">
+            <strong>Medical History</strong>
+            <div class="muted" id="p_history" style="margin-top:8px"></div>
+          </div>
+
+          <div class="section" style="margin-top:12px">
+            <strong>Assigned Doctor</strong>
+            <div class="muted" id="p_doctor" style="margin-top:8px">None</div>
+            <div style="margin-top:12px">
+              <button id="requestAppt" class="btn">Request Appointment / Change Doctor</button>
+            </div>
+          </div>
+
+          <!-- NEW: Patient Medications Section -->
+          <div class="section" style="margin-top:12px">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <strong>Current Medications</strong>
+              <button id="addMedicationBtn" class="btn-outline" style="font-size:12px">+ Add</button>
+            </div>
+            <div id="patientMedications" style="margin-top:8px">
+              <!-- Medications will be populated here -->
+            </div>
+          </div>
+
+          <!-- NEW: Patient Vitals Section -->
+          <div class="section" style="margin-top:12px">
+            <strong>Vital Signs</strong>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px">
+              <div class="vital-item">
+                <div class="muted">Blood Pressure</div>
+                <div id="p_bp">--/--</div>
+              </div>
+              <div class="vital-item">
+                <div class="muted">Heart Rate</div>
+                <div id="p_hr">-- bpm</div>
+              </div>
+              <div class="vital-item">
+                <div class="muted">Temperature</div>
+                <div id="p_temp">-- °C</div>
+              </div>
+              <div class="vital-item">
+                <div class="muted">Blood Oxygen</div>
+                <div id="p_oxygen">-- %</div>
+              </div>
+            </div>
+            <button id="recordVitalsBtn" class="btn-outline" style="margin-top:10px">Record Vitals</button>
+          </div>
+        </div>
+
+        <aside>
+          <div class="section">
+            <strong>Upcoming Appointments</strong>
+            <div id="p_appointments" style="margin-top:8px" class="muted">No upcoming appointments</div>
+          </div>
+
+          <!-- NEW: Doctor-Patient Chat -->
+          <div class="section" style="margin-top:12px">
+            <strong>Chat with Doctor</strong>
+            <div class="chat-container">
+              <div class="chat-messages" id="chatMessages">
+                <div class="chat-message message-received">Hello, how can I help you today?</div>
+              </div>
+              <div class="chat-input">
+                <input type="text" id="chatInput" placeholder="Type your message...">
+                <button id="sendMessageBtn">Send</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="section" style="margin-top:12px">
+            <strong>Quick Actions</strong>
+            <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px">
+              <button id="editPatientBtn" class="btn-outline">Edit Patient (simulate)</button>
+              <button id="messageDoctor" class="btn-outline">Message Assigned Doctor</button>
+              <button id="exportPatientData" class="btn-outline">Export Patient Data</button>
+              <button id="addLabResult" class="btn-outline">Add Lab Result</button>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
 </main>
 
-<script src="script.js"></script>
+<footer>
+  Prototype — not for production. For real deployment integrate secure backend, auth, and encrypted records.
+</footer>
+
+<!-- Modal -->
+<div id="modalBackdrop" class="modal-backdrop">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div id="modalContent"></div>
+    <div style="margin-top:12px;text-align:right"><button id="closeModal" class="btn-outline">Close</button></div>
+  </div>
+</div>
+
+<script>
+/* ---------------------------
+   Demo state: doctors & patients (10 doctors, 20 patients)
+   --------------------------- */
+const initialDoctors = [
+  {id:'D1', name:'Dr. A. Kumar', speciality:['General','Respiratory'], qualification:'MBBS', years:8, location:'Delhi'},
+  {id:'D2', name:'Dr. Priya Singh', speciality:['Cardiology'], qualification:'MD', years:6, location:'Noida'},
+  {id:'D3', name:'Dr. R. Das', speciality:['Orthopaedics'], qualification:'MS Ortho', years:10, location:'Gurugram'},
+  {id:'D4', name:'Dr. S. Gupta', speciality:['Dermatology'], qualification:'MD Derm', years:7, location:'Mumbai'},
+  {id:'D5', name:'Dr. Arjun Patel', speciality:['Infectious','General'], qualification:'MBBS', years:5, location:'Vadodara'},
+  {id:'D6', name:'Dr. Meera Iyer', speciality:['Obstetrics','Gynaecology'], qualification:'MD OBG', years:9, location:'Chennai'},
+  {id:'D7', name:'Dr. K. Rao', speciality:['Psychiatry'], qualification:'MD Psych', years:12, location:'Hyderabad'},
+  {id:'D8', name:'Dr. N. Verma', speciality:['Pediatrics'], qualification:'MD Ped', years:4, location:'Lucknow'},
+  {id:'D9', name:'Dr. L. Joseph', speciality:['Endocrinology'], qualification:'DM Endo', years:8, location:'Kochi'},
+  {id:'D10', name:'Dr. P. Sharma', speciality:['ENT','Respiratory'], qualification:'MS ENT', years:11, location:'Agra'}
+];
+
+const diseases = ['Fever','Respiratory','Skin Infection','Fracture','Cardiac','Diabetes','Pregnancy','Depression','Childhood Illness','ENT'];
+const sampleNames = [
+  'Raju', 'Sohan', 'Munna', 'Ramesh', 'Kishore','Sanjay','Vikram','Amit','Manish','Sandeep',
+  'Pooja','Sushma','Rekha','Geeta','Radha','Meena','Lata','Kavita','Nisha','Sanjana'
+];
+
+const initialPatients = [];
+for(let i=0;i<20;i++){
+  const d = diseases[i % diseases.length];
+  initialPatients.push({
+    id: 'P' + (i+1),
+    name: sampleNames[i],
+    age: 18 + (i%30),
+    disease: d,
+    history: `${d} for ${Math.floor(Math.random()*12)+1} months. Migrant from ${['Uttar','Bihar','Rajasthan','Odisha'][i%4]} region.`,
+    contact: '9' + Math.floor(100000000 + Math.random()*899999999),
+    address: `${i+1} Migrant Camp, City ${i%7}`,
+    assignedDoctor: null,
+    // NEW: Additional patient data
+    medications: [],
+    vitals: [],
+    labResults: [],
+    chatMessages: [{sender: 'doctor', message: 'Hello, how can I help you today?', timestamp: new Date().toISOString()}]
+  });
+}
+
+/* ---------------------------
+   persistence & state helpers
+   --------------------------- */
+function loadState(){
+  const saved = sessionStorage.getItem('demoState');
+  if(saved) return JSON.parse(saved);
+  const s = { 
+    doctors: initialDoctors, 
+    patients: initialPatients, 
+    appointments: [],
+    // NEW: Additional state data
+    notifications: [],
+    activityLog: [{type: 'system', message: 'System initialized', timestamp: new Date().toISOString()}]
+  };
+  sessionStorage.setItem('demoState', JSON.stringify(s));
+  return s;
+}
+function saveState(){
+  sessionStorage.setItem('demoState', JSON.stringify(state));
+}
+let state = loadState();
+
+/* ---------------------------
+   DOM elements
+   --------------------------- */
+const patientListEl = document.getElementById('patientList');
+const doctorsListEl = document.getElementById('doctorsList');
+const appointmentsListEl = document.getElementById('appointmentsList');
+const filterDisease = document.getElementById('filterDisease');
+const patientSearch = document.getElementById('patientSearch');
+const sortBy = document.getElementById('sortBy');
+const modalBackdrop = document.getElementById('modalBackdrop');
+const modalContent = document.getElementById('modalContent');
+const dashboardSection = document.getElementById('dashboard');
+const patientPage = document.getElementById('patientPage');
+
+/* ---------------------------
+   NEW: Feature Functions
+   --------------------------- */
+
+// Notification system
+function addNotification(message, type = 'info') {
+  state.notifications.push({
+    id: Date.now(),
+    message,
+    type,
+    read: false,
+    timestamp: new Date().toISOString()
+  });
+  saveState();
+  updateNotificationBadge();
+}
+
+function updateNotificationBadge() {
+  const unreadCount = state.notifications.filter(n => !n.read).length;
+  const badge = document.getElementById('notificationCount');
+  if (unreadCount > 0) {
+    badge.textContent = unreadCount > 9 ? '9+' : unreadCount;
+    badge.style.display = 'flex';
+  } else {
+    badge.style.display = 'none';
+  }
+}
+
+function showNotifications() {
+  const unread = state.notifications.filter(n => !n.read);
+  const html = `
+    <h2>Notifications</h2>
+    ${unread.length === 0 ? 
+      '<div class="muted">No new notifications</div>' : 
+      unread.map(n => `
+        <div class="row" style="margin-bottom:8px">
+          <div style="flex:1">
+            <div>${n.message}</div>
+            <div class="mini">${new Date(n.timestamp).toLocaleString()}</div>
+          </div>
+          <button class="btn-outline" onclick="markNotificationRead(${n.id})">Mark Read</button>
+        </div>
+      `).join('')
+    }
+    <div style="margin-top:12px">
+      <button class="btn-outline" onclick="clearAllNotifications()">Clear All</button>
+    </div>
+  `;
+  openModal(html);
+}
+
+function markNotificationRead(id) {
+  const notification = state.notifications.find(n => n.id === id);
+  if (notification) {
+    notification.read = true;
+    saveState();
+    showNotifications();
+  }
+}
+
+function clearAllNotifications() {
+  state.notifications.forEach(n => n.read = true);
+  saveState();
+  closeModal();
+  updateNotificationBadge();
+}
+
+// Activity logging
+function logActivity(message, type = 'info') {
+  state.activityLog.unshift({
+    type,
+    message,
+    timestamp: new Date().toISOString()
+  });
+  // Keep only last 10 activities
+  if (state.activityLog.length > 10) state.activityLog.pop();
+  saveState();
+  renderRecentActivity();
+}
+
+function renderRecentActivity() {
+  const container = document.getElementById('recentActivity');
+  if (!container) return;
+  
+  container.innerHTML = state.activityLog.slice(0, 5).map(activity => `
+    <div class="timeline-item">
+      <div class="timeline-date">${new Date(activity.timestamp).toLocaleTimeString()}</div>
+      <div class="timeline-content">${activity.message}</div>
+    </div>
+  `).join('');
+}
+
+// Emergency feature
+function handleEmergency() {
+  addNotification('Emergency button pressed!', 'urgent');
+  logActivity('Emergency alert activated', 'urgent');
+  
+  openModal(`
+    <h2>Emergency Assistance</h2>
+    <div style="background:linear-gradient(90deg,var(--accent3),#ff6b6b);padding:12px;border-radius:8px;margin:12px 0">
+      <strong>Emergency services have been notified</strong>
+      <div style="margin-top:6px">Help is on the way. Please stay calm.</div>
+    </div>
+    <div class="muted">Nearby hospitals and emergency contacts have been alerted.</div>
+    <div style="margin-top:12px">
+      <button class="btn" onclick="closeModal()">OK</button>
+    </div>
+  `);
+}
+
+// Medication management
+function showMedicationTracker() {
+  const html = `
+    <h2>Medication Tracker</h2>
+    <div class="muted">Manage patient medications</div>
+    
+    <div style="margin-top:12px">
+      <h3>Add New Medication</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px">
+        <input type="text" id="medName" placeholder="Medication name">
+        <input type="text" id="medDosage" placeholder="Dosage">
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px">
+        <input type="text" id="medFrequency" placeholder="Frequency (e.g., 2x daily)">
+        <input type="date" id="medStartDate">
+      </div>
+      <button class="btn" style="margin-top:8px" onclick="addMedication()">Add Medication</button>
+    </div>
+    
+    <div style="margin-top:16px">
+      <h3>Current Medications</h3>
+      <div id="allMedicationsList" style="max-height:300px;overflow:auto">
+        ${renderAllMedications()}
+      </div>
+    </div>
+  `;
+  openModal(html);
+}
+
+function renderAllMedications() {
+  let allMeds = [];
+  state.patients.forEach(patient => {
+    patient.medications.forEach(med => {
+      allMeds.push({...med, patientName: patient.name});
+    });
+  });
+  
+  if (allMeds.length === 0) return '<div class="muted">No medications recorded</div>';
+  
+  return allMeds.map(med => `
+    <div class="medication-item">
+      <div>
+        <div class="medication-name">${med.name}</div>
+        <div class="medication-dosage">${med.dosage} • ${med.frequency} • For: ${med.patientName}</div>
+      </div>
+      <button class="btn-outline" style="font-size:12px" onclick="removeMedication('${med.patientName}', '${med.name}')">Remove</button>
+    </div>
+  `).join('');
+}
+
+function addMedication() {
+  const name = document.getElementById('medName').value;
+  const dosage = document.getElementById('medDosage').value;
+  const frequency = document.getElementById('medFrequency').value;
+  const startDate = document.getElementById('medStartDate').value;
+  
+  if (!name || !dosage || !frequency) {
+    alert('Please fill in all medication fields');
+    return;
+  }
+  
+  // For demo, add to first patient
+  if (state.patients.length > 0) {
+    state.patients[0].medications.push({
+      name,
+      dosage,
+      frequency,
+      startDate: startDate || new Date().toISOString().split('T')[0]
+    });
+    saveState();
+    logActivity(`Added medication: ${name} for ${state.patients[0].name}`);
+    showMedicationTracker();
+  }
+}
+
+function removeMedication(patientName, medName) {
+  const patient = state.patients.find(p => p.name === patientName);
+  if (patient) {
+    patient.medications = patient.medications.filter(m => m.name !== medName);
+    saveState();
+    logActivity(`Removed medication: ${medName} for ${patientName}`);
+    showMedicationTracker();
+  }
+}
+
+// Analytics feature
+function showAnalytics() {
+  const diseaseCount = {};
+  state.patients.forEach(p => {
+    diseaseCount[p.disease] = (diseaseCount[p.disease] || 0) + 1;
+  });
+  
+  const ageGroups = {'<20':0, '20-35':0, '36-50':0, '>50':0};
+  state.patients.forEach(p => {
+    if (p.age < 20) ageGroups['<20']++;
+    else if (p.age <= 35) ageGroups['20-35']++;
+    else if (p.age <= 50) ageGroups['36-50']++;
+    else ageGroups['>50']++;
+  });
+  
+  const html = `
+    <h2>Health Analytics</h2>
+    <div class="muted">Patient statistics and insights</div>
+    
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px">
+      <div class="stat-card">
+        <div class="stat-label">Most Common Condition</div>
+        <div class="stat-value">${Object.keys(diseaseCount).reduce((a,b) => diseaseCount[a] > diseaseCount[b] ? a : b)}</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Average Age</div>
+        <div class="stat-value">${Math.round(state.patients.reduce((sum,p) => sum + p.age, 0) / state.patients.length)}</div>
+      </div>
+    </div>
+    
+    <div style="margin-top:16px">
+      <h3>Disease Distribution</h3>
+      ${Object.entries(diseaseCount).map(([disease, count]) => `
+        <div style="margin:8px 0">
+          <div style="display:flex;justify-content:space-between">
+            <span>${disease}</span>
+            <span>${count} patients</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width:${(count / state.patients.length) * 100}%"></div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+    
+    <div style="margin-top:16px">
+      <h3>Age Distribution</h3>
+      ${Object.entries(ageGroups).map(([group, count]) => `
+        <div style="margin:8px 0">
+          <div style="display:flex;justify-content:space-between">
+            <span>${group}</span>
+            <span>${count} patients</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width:${(count / state.patients.length) * 100}%"></div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+  openModal(html);
+}
+
+// Update stats overview
+function updateStatsOverview() {
+  document.getElementById('totalPatientsStat').textContent = state.patients.length;
+  document.getElementById('activeAppointmentsStat').textContent = state.appointments.length;
+  document.getElementById('doctorsAvailableStat').textContent = state.doctors.length;
+  
+  // Update progress bars
+  document.querySelectorAll('.progress-fill').forEach((bar, index) => {
+    if (index === 0) bar.style.width = '100%';
+    else if (index === 1) bar.style.width = `${Math.min(100, (state.appointments.length / 10) * 100)}%`;
+    else if (index === 2) bar.style.width = '100%';
+  });
+}
+
+/* ---------------------------
+   Rendering functions
+   --------------------------- */
+function renderDoctors(){
+  doctorsListEl.innerHTML = '';
+  state.doctors.forEach(d=>{
+    const div = document.createElement('div'); div.className='row';
+    div.innerHTML = `<div style="flex:1"><strong>${d.name}</strong><div class="mini">${d.location} • ${d.years} yrs</div></div>
+                     <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+                       <div class="pill" style="font-size:12px;padding:6px 8px">${d.speciality.join(', ')}</div>
+                       <button class="btn-outline" onclick="openDoctorForm('${d.id}')">Profile</button>
+                     </div>`;
+    doctorsListEl.appendChild(div);
+  });
+}
+
+function populateDiseaseFilter(){
+  const set = new Set(state.patients.map(p=>p.disease));
+  filterDisease.innerHTML = '<option value="">All diseases</option>';
+  set.forEach(s=>{
+    const o = document.createElement('option'); o.value=s; o.textContent=s; filterDisease.appendChild(o);
+  });
+}
+
+function renderPatients(q=''){
+  const query = (q || patientSearch.value || '').trim().toLowerCase();
+  const filter = filterDisease.value;
+  const sort = sortBy.value;
+  let list = state.patients.slice();
+
+  if(filter) list = list.filter(p=>p.disease === filter);
+  if(query) list = list.filter(p => (p.name+' '+p.disease+' '+p.history).toLowerCase().includes(query));
+  if(sort === 'name') list.sort((a,b)=> a.name.localeCompare(b.name));
+  if(sort === 'age') list.sort((a,b)=> a.age - b.age);
+  if(sort === 'disease') list.sort((a,b)=> a.disease.localeCompare(b.disease));
+
+  patientListEl.innerHTML = '';
+  list.forEach(p=>{
+    const div = document.createElement('div'); div.className='row';
+    const assigned = p.assignedDoctor ? state.doctors.find(d=>d.id===p.assignedDoctor).name : '—';
+    div.innerHTML = `<div style="flex:1"><strong>${p.name}</strong><div class="mini">${p.age} yrs • ${p.disease} • ${assigned}</div></div>
+                     <div style="display:flex;align-items:center;gap:8px">
+                       <button class="btn-outline" onclick="openPatientPage('${p.id}')">Open</button>
+                       <div class="mini">${p.contact}</div>
+                     </div>`;
+    patientListEl.appendChild(div);
+  });
+  document.getElementById('totalPatients').textContent = `${state.patients.length} Patients`;
+}
+
+function renderAppointments(){
+  appointmentsListEl.innerHTML='';
+  if(state.appointments.length===0){
+    appointmentsListEl.innerHTML = '<div class="muted" style="padding:12px">No appointments yet</div>'; return;
+  }
+  state.appointments.forEach(a=>{
+    const p = state.patients.find(x=>x.id===a.patientId);
+    const d = state.doctors.find(x=>x.id===a.doctorId);
+    const div = document.createElement('div'); div.className='row';
+    div.innerHTML = `<div style="flex:1"><strong>${p.name}</strong><div class="mini">${d.name} • ${d.speciality.join(', ')}</div></div>
+                     <div class="pill">${a.date}</div>`;
+    appointmentsListEl.appendChild(div);
+  });
+}
+
+/* ---------------------------
+   Modal helpers (simulated Google Form)
+   --------------------------- */
+function openModal(html){
+  modalContent.innerHTML = html;
+  modalBackdrop.style.display = 'flex';
+}
+function closeModal(){ modalBackdrop.style.display = 'none'; }
+
+/* ---------- Doctor login flow ---------- */
+document.getElementById('doctorBtn').addEventListener('click', ()=>{
+  const options = state.doctors.map(d=>`<option value="${d.id}">${d.name} — ${d.speciality.join('/')}</option>`).join('');
+  openModal(`
+    <h2>Doctor Login — Select Profile</h2>
+    <div class="small-muted" style="margin-top:8px">Choose a preloaded profile or add a new one</div>
+    <div style="margin-top:12px"><select id="doctorSelect" style="width:100%">${options}</select></div>
+    <div style="margin-top:12px;display:flex;gap:8px"><button id="openDocFormBtn" class="btn">Open Google Form (simulate)</button><button id="newDoctorBtn" class="btn-outline">Add New</button></div>
+  `);
+  document.getElementById('openDocFormBtn').onclick = ()=>{
+    const id = document.getElementById('doctorSelect').value; openDoctorForm(id);
+  };
+  document.getElementById('newDoctorBtn').onclick = ()=>{
+    const newId = 'D' + (state.doctors.length+1);
+    state.doctors.push({id:newId,name:'Dr. New',speciality:['General'],qualification:'',years:1,location:'Unknown'});
+    saveState(); renderDoctors(); closeModal();
+    setTimeout(()=> document.getElementById('doctorBtn').click(),120);
+  };
+});
+
+function openDoctorForm(docId){
+  const doc = state.doctors.find(d=>d.id===docId);
+  const allSpecs = ['General','Respiratory','Cardiology','Orthopaedics','Dermatology','Infectious','Obstetrics','Psychiatry','Pediatrics','Endocrinology','ENT'];
+  const specHtml = allSpecs.map(s=>`<label style="margin-right:8px"><input type="checkbox" name="spec" value="${s}" ${doc.speciality.includes(s)?'checked':''}/> ${s}</label>`).join('');
+  openModal(`
+    <h2>Google Form — Doctor Profile (simulated)</h2>
+    <div class="small-muted">Fill in your information</div>
+    <div style="margin-top:12px"><label>Full name</label><input id="g_name" value="${doc.name}" /></div>
+    <div style="margin-top:8px"><label>Qualification</label><input id="g_qual" value="${doc.qualification||''}" /></div>
+    <div style="margin-top:8px" class="form-row"><div style="flex:1"><label>Years</label><input id="g_years" type="number" value="${doc.years}" /></div><div style="flex:1"><label>Location</label><input id="g_loc" value="${doc.location}" /></div></div>
+    <div style="margin-top:8px"><label>Specialities</label><div style="margin-top:6px">${specHtml}</div></div>
+    <div style="margin-top:12px;display:flex;gap:8px"><button id="submitDoc" class="btn">Submit</button><button id="cancelDoc" class="btn-outline">Cancel</button></div>
+  `);
+  document.getElementById('cancelDoc').onclick = closeModal;
+  document.getElementById('submitDoc').onclick = ()=>{
+    const name = document.getElementById('g_name').value.trim();
+    const qual = document.getElementById('g_qual').value.trim();
+    const years = Number(document.getElementById('g_years').value)||doc.years;
+    const loc = document.getElementById('g_loc').value.trim();
+    const specEls = Array.from(modalContent.querySelectorAll("input[name='spec']:checked")).map(x=>x.value);
+    doc.name = name || doc.name; doc.qualification=qual; doc.years=years; doc.location = loc || doc.location; doc.speciality = specEls.length ? specEls : doc.speciality;
+    saveState(); renderDoctors(); closeModal();
+    setTimeout(()=> showPatientsForDoctor(doc.id),80);
+  };
+}
+
+function showPatientsForDoctor(docId){
+  const doc = state.doctors.find(d=>d.id===docId);
+  const matches = state.patients.filter(p=> doc.speciality.some(s=> p.disease.toLowerCase().includes(s.toLowerCase()) || s.toLowerCase().includes(p.disease.toLowerCase())));
+  const listHtml = matches.length
+    ? matches.map(p=>`<div style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.02)"><strong>${p.name}</strong><div class="mini">${p.disease} • ${p.contact}</div><div style="margin-top:6px"><button class="btn-outline" onclick="openPatientPage('${p.id}')">Open Record</button></div></div>`).join('')
+    : '<div class="muted">No direct matches found. Showing all patients</div>' + state.patients.map(p=>`<div style="padding:8px;border-bottom:1px solid rgba(255,255,255,0.02)"><strong>${p.name}</strong><div class="mini">${p.disease} • ${p.contact}</div><div style="margin-top:6px"><button class="btn-outline" onclick="openPatientPage(\\''+p.id+'\\')">Open Record</button></div></div>`).join('');
+  openModal(`<h2>Patients matching ${doc.name}</h2><div style="max-height:420px;overflow:auto">${listHtml}</div>`);
+}
+
+/* ---------- Patient login flow ---------- */
+document.getElementById('patientBtn').addEventListener('click', ()=>{
+  const options = state.patients.map(p=>`<option value="${p.id}">${p.name} — ${p.disease}</option>`).join('');
+  openModal(`
+    <h2>Patient Login — Select Profile</h2>
+    <div style="margin-top:8px"><select id="patientSelect" style="width:100%">${options}</select></div>
+    <div style="margin-top:12px;display:flex;gap:8px"><button id="openPatForm" class="btn">Open Google Form (simulate)</button><button id="newPatient" class="btn-outline">Add New</button></div>
+  `);
+  document.getElementById('openPatForm').onclick = ()=> openPatientForm(document.getElementById('patientSelect').value);
+  document.getElementById('newPatient').onclick = ()=>{
+    const newId = 'P' + (state.patients.length+1);
+    state.patients.push({id:newId,name:'New Patient',age:20,disease:'General',history:'',contact:'',address:'',assignedDoctor:null, medications: [], vitals: [], labResults: [], chatMessages: []});
+    saveState(); renderPatients(); closeModal();
+    setTimeout(()=> document.getElementById('patientBtn').click(),120);
+  };
+});
+
+function openPatientForm(pid){
+  const p = state.patients.find(x=>x.id===pid);
+  openModal(`
+    <h2>Google Form — Patient (simulated)</h2>
+    <div class="small-muted">Describe your disease / symptoms</div>
+    <div style="margin-top:12px"><label>Full name</label><input id="pt_name" value="${p.name}" /></div>
+    <div style="margin-top:8px" class="form-row"><div style="flex:1"><label>Age</label><input id="pt_age" type="number" value="${p.age}" /></div><div style="flex:1"><label>Contact</label><input id="pt_contact" value="${p.contact}" /></div></div>
+    <div style="margin-top:8px"><label>Disease / Symptoms</label><input id="pt_disease" value="${p.disease}" /></div>
+    <div style="margin-top:8px"><label>History</label><textarea id="pt_history" style="width:100%;height:80px">${p.history}</textarea></div>
+    <div style="margin-top:12px;display:flex;gap:8px"><button id="submitPat" class="btn">Submit</button><button id="cancelPat" class="btn-outline">Cancel</button></div>
+  `);
+  document.getElementById('cancelPat').onclick = closeModal;
+  document.getElementById('submitPat').onclick = ()=>{
+    p.name = document.getElementById('pt_name').value.trim() || p.name;
+    p.age = Number(document.getElementById('pt_age').value) || p.age;
+    p.contact = document.getElementById('pt_contact').value.trim() || p.contact;
+    p.disease = document.getElementById('pt_disease').value.trim() || p.disease;
+    p.history = document.getElementById('pt_history').value.trim();
+    saveState(); renderPatients(); closeModal();
+    setTimeout(()=> showDoctorsForPatient(p.id),80);
+  };
+}
+
+function showDoctorsForPatient(pid){
+  const p = state.patients.find(x=>x.id===pid);
+  const matches = state.doctors.filter(d=> d.speciality.some(s=> p.disease.toLowerCase().includes(s.toLowerCase()) || s.toLowerCase().includes(p.disease.toLowerCase())));
+  const list = matches.length ? matches : state.doctors;
+  const html = `<h2>Doctors matching for ${p.name} — ${p.disease}</h2><div style="max-height:420px;overflow:auto">` + list.map(d=>`<div style="padding:10px;border-bottom:1px solid rgba(255,255,255,0.03)"><strong>${d.name}</strong><div class="mini">${d.speciality.join(', ')} • ${d.location}</div><div style="margin-top:8px"><button class="btn" onclick="bookAppointment('${p.id}','${d.id}')">Book Appointment</button></div></div>`).join('') + `</div>`;
+  openModal(html);
+}
+
+/* ---------- Book appointment ---------- */
+window.bookAppointment = function(patientId, doctorId){
+  const patient = state.patients.find(p=>p.id===patientId);
+  const doctor = state.doctors.find(d=>d.id===doctorId);
+  const date = new Date().toLocaleString();
+  state.appointments.push({patientId,doctorId,date});
+  patient.assignedDoctor = doctorId;
+  saveState(); renderAppointments(); renderPatients(); closeModal();
+  addNotification(`New appointment: ${patient.name} with ${doctor.name}`);
+  logActivity(`Appointment booked: ${patient.name} with ${doctor.name}`);
+  setTimeout(()=> alert(`Appointment confirmed:\nPatient: ${patient.name}\nDoctor: ${doctor.name}\nOn: ${date}`),60);
+};
+
+/* ---------- Patient full page (SPA navigation) ---------- */
+function openPatientPage(pid){
+  // update hash so page is navigable & bookmarkable
+  location.hash = `patient?id=${pid}`;
+  renderRoute();
+}
+
+function renderPatientProfile(pid){
+  const p = state.patients.find(x=>x.id===pid);
+  if(!p) { alert('Patient not found'); location.hash=''; return; }
+
+  // header
+  document.getElementById('p_avatar').textContent = p.name.split(' ').map(n=>n[0]).slice(0,2).join('');
+  document.getElementById('p_name').textContent = p.name;
+  document.getElementById('p_id').textContent = `(${p.id})`;
+  document.getElementById('p_badges').innerHTML = `<span class="badge" style="background:linear-gradient(90deg,var(--accent2),var(--accent1));color:#021428;padding:6px 10px;border-radius:8px;margin-right:8px">Age ${p.age}</span>
+                                                   <span class="badge" style="background:linear-gradient(90deg,var(--accent3),var(--accent2));color:#021428;padding:6px 10px;border-radius:8px">${p.disease}</span>`;
+  document.getElementById('p_summary').textContent = p.history.split('.').slice(0,1).join('.') + '.';
+
+  // KPIs
+  document.getElementById('k_age').textContent = p.age;
+  document.getElementById('k_disease').textContent = p.disease;
+  document.getElementById('k_app').textContent = state.appointments.filter(a=>a.patientId===p.id).length;
+
+  // details
+  document.getElementById('p_contact').textContent = p.contact || '—';
+  document.getElementById('p_address').textContent = p.address || '—';
+  document.getElementById('p_history').textContent = p.history || '—';
+  if(p.assignedDoctor){
+    const d = state.doctors.find(x=>x.id===p.assignedDoctor);
+    document.getElementById('p_doctor').textContent = d ? (d.name + ' • ' + d.speciality.join(', ')) : '—';
+  } else {
+    document.getElementById('p_doctor').textContent = 'None';
+  }
+
+  // NEW: Render medications
+  renderPatientMedications(p);
+
+  // NEW: Render vitals
+  renderPatientVitals(p);
+
+  // NEW: Render chat
+  renderPatientChat(p);
+
+  // appointments list
+  const appts = state.appointments.filter(a=>a.patientId===p.id);
+  const apptEl = document.getElementById('p_appointments');
+  if(appts.length===0) apptEl.innerHTML = '<div class="muted">No upcoming appointments</div>';
+  else apptEl.innerHTML = appts.map(a=>{
+    const doc = state.doctors.find(d=>d.id===a.doctorId);
+    return `<div style="padding:8px;border-radius:8px;background:linear-gradient(90deg, rgba(255,255,255,0.02), transparent);margin-bottom:6px"><strong>${doc ? doc.name : a.doctorId}</strong><div class="mini">${a.date}</div></div>`;
+  }).join('');
+
+  // actions
+  document.getElementById('requestAppt').onclick = ()=> { closeModal(); setTimeout(()=> showDoctorsForPatient(p.id),80); };
+  document.getElementById('editPatientBtn').onclick = ()=> { openEditPatientForm(p.id); };
+  document.getElementById('messageDoctor').onclick = ()=> {
+    if(!p.assignedDoctor) return alert('No assigned doctor to message.');
+    const d = state.doctors.find(x=>x.id===p.assignedDoctor);
+    alert(`(Simulated) Message sent to ${d.name}.`);
+  };
+  
+  // NEW: Additional action handlers
+  document.getElementById('exportPatientData').onclick = ()=> exportPatientData(p);
+  document.getElementById('addLabResult').onclick = ()=> addLabResult(p);
+  document.getElementById('addMedicationBtn').onclick = ()=> addPatientMedication(p);
+  document.getElementById('recordVitalsBtn').onclick = ()=> recordVitals(p);
+  document.getElementById('sendMessageBtn').onclick = ()=> sendChatMessage(p);
+
+  // show page
+  dashboardSection.style.display = 'none';
+  patientPage.style.display = 'block';
+}
+
+// NEW: Patient medication rendering
+function renderPatientMedications(p) {
+  const container = document.getElementById('patientMedications');
+  if (p.medications.length === 0) {
+    container.innerHTML = '<div class="muted">No medications prescribed</div>';
+    return;
+  }
+  
+  container.innerHTML = p.medications.map(med => `
+    <div class="medication-item">
+      <div>
+        <div class="medication-name">${med.name}</div>
+        <div class="medication-dosage">${med.dosage} • ${med.frequency}</div>
+      </div>
+      <button class="btn-outline" style="font-size:12px" onclick="removePatientMedication('${p.id}', '${med.name}')">Remove</button>
+    </div>
+  `).join('');
+}
+
+// NEW: Patient vitals rendering
+function renderPatientVitals(p) {
+  const latestVitals = p.vitals.length > 0 ? p.vitals[p.vitals.length - 1] : null;
+  
+  document.getElementById('p_bp').textContent = latestVitals ? `${latestVitals.bpSystolic}/${latestVitals.bpDiastolic}` : '--/--';
+  document.getElementById('p_hr').textContent = latestVitals ? `${latestVitals.heartRate} bpm` : '-- bpm';
+  document.getElementById('p_temp').textContent = latestVitals ? `${latestVitals.temperature} °C` : '-- °C';
+  document.getElementById('p_oxygen').textContent = latestVitals ? `${latestVitals.bloodOxygen} %` : '-- %';
+}
+
+// NEW: Patient chat rendering
+function renderPatientChat(p) {
+  const container = document.getElementById('chatMessages');
+  container.innerHTML = p.chatMessages.map(msg => `
+    <div class="chat-message ${msg.sender === 'doctor' ? 'message-received' : 'message-sent'}">
+      ${msg.message}
+    </div>
+  `).join('');
+  container.scrollTop = container.scrollHeight;
+}
+
+// NEW: Add medication to specific patient
+function addPatientMedication(p) {
+  const html = `
+    <h2>Add Medication for ${p.name}</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px">
+      <input type="text" id="patMedName" placeholder="Medication name">
+      <input type="text" id="patMedDosage" placeholder="Dosage">
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px">
+      <input type="text" id="patMedFrequency" placeholder="Frequency (e.g., 2x daily)">
+      <input type="date" id="patMedStartDate">
+    </div>
+    <div style="margin-top:12px;display:flex;gap:8px">
+      <button class="btn" onclick="savePatientMedication('${p.id}')">Save</button>
+      <button class="btn-outline" onclick="closeModal()">Cancel</button>
+    </div>
+  `;
+  openModal(html);
+}
+
+function savePatientMedication(patientId) {
+  const p = state.patients.find(x => x.id === patientId);
+  const name = document.getElementById('patMedName').value;
+  const dosage = document.getElementById('patMedDosage').value;
+  const frequency = document.getElementById('patMedFrequency').value;
+  
+  if (!name || !dosage || !frequency) {
+    alert('Please fill in all medication fields');
+    return;
+  }
+  
+  p.medications.push({
+    name,
+    dosage,
+    frequency,
+    startDate: document.getElementById('patMedStartDate').value || new Date().toISOString().split('T')[0]
+  });
+  
+  saveState();
+  renderPatientMedications(p);
+  logActivity(`Added medication ${name} for ${p.name}`);
+  closeModal();
+}
+
+function removePatientMedication(patientId, medName) {
+  const p = state.patients.find(x => x.id === patientId);
+  p.medications = p.medications.filter(m => m.name !== medName);
+  saveState();
+  renderPatientMedications(p);
+  logActivity(`Removed medication ${medName} for ${p.name}`);
+}
+
+// NEW: Record vitals
+function recordVitals(p) {
+  const html = `
+    <h2>Record Vitals for ${p.name}</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px">
+      <div>
+        <label>Blood Pressure (Systolic)</label>
+        <input type="number" id="vitalBpSystolic" placeholder="120">
+      </div>
+      <div>
+        <label>Blood Pressure (Diastolic)</label>
+        <input type="number" id="vitalBpDiastolic" placeholder="80">
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px">
+      <div>
+        <label>Heart Rate (bpm)</label>
+        <input type="number" id="vitalHeartRate" placeholder="72">
+      </div>
+      <div>
+        <label>Temperature (°C)</label>
+        <input type="number" id="vitalTemperature" placeholder="36.6" step="0.1">
+      </div>
+    </div>
+    <div style="margin-top:8px">
+      <label>Blood Oxygen (%)</label>
+      <input type="number" id="vitalBloodOxygen" placeholder="98" min="0" max="100">
+    </div>
+    <div style="margin-top:12px;display:flex;gap:8px">
+      <button class="btn" onclick="savePatientVitals('${p.id}')">Save</button>
+      <button class="btn-outline" onclick="closeModal()">Cancel</button>
+    </div>
+  `;
+  openModal(html);
+}
+
+function savePatientVitals(patientId) {
+  const p = state.patients.find(x => x.id === patientId);
+  const bpSystolic = document.getElementById('vitalBpSystolic').value;
+  const bpDiastolic = document.getElementById('vitalBpDiastolic').value;
+  const heartRate = document.getElementById('vitalHeartRate').value;
+  const temperature = document.getElementById('vitalTemperature').value;
+  const bloodOxygen = document.getElementById('vitalBloodOxygen').value;
+  
+  if (!bpSystolic || !bpDiastolic || !heartRate || !temperature || !bloodOxygen) {
+    alert('Please fill in all vital signs');
+    return;
+  }
+  
+  p.vitals.push({
+    bpSystolic: parseInt(bpSystolic),
+    bpDiastolic: parseInt(bpDiastolic),
+    heartRate: parseInt(heartRate),
+    temperature: parseFloat(temperature),
+    bloodOxygen: parseInt(bloodOxygen),
+    timestamp: new Date().toISOString()
+  });
+  
+  saveState();
+  renderPatientVitals(p);
+  logActivity(`Recorded vitals for ${p.name}`);
+  closeModal();
+}
+
+// NEW: Chat functionality
+function sendChatMessage(p) {
+  const input = document.getElementById('chatInput');
+  const message = input.value.trim();
+  
+  if (!message) return;
+  
+  p.chatMessages.push({
+    sender: 'patient',
+    message: message,
+    timestamp: new Date().toISOString()
+  });
+  
+  // Simulate doctor response after a delay
+  setTimeout(() => {
+    p.chatMessages.push({
+      sender: 'doctor',
+      message: 'Thank you for your message. I will review this and get back to you shortly.',
+      timestamp: new Date().toISOString()
+    });
+    saveState();
+    
+    const idInHash = (location.hash.match(/id=([^&]+)/) || [])[1];
+    if (idInHash === p.id) {
+      renderPatientChat(p);
+    }
+  }, 2000);
+  
+  saveState();
+  renderPatientChat(p);
+  input.value = '';
+}
+
+// NEW: Export patient data
+function exportPatientData(p) {
+  const data = {
+    patient: {
+      id: p.id,
+      name: p.name,
+      age: p.age,
+      disease: p.disease,
+      contact: p.contact,
+      address: p.address,
+      history: p.history
+    },
+    medications: p.medications,
+    vitals: p.vitals,
+    appointments: state.appointments.filter(a => a.patientId === p.id),
+    exportDate: new Date().toISOString()
+  };
+  
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `patient_${p.name}_${new Date().toISOString().split('T')[0]}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  
+  logActivity(`Exported data for ${p.name}`);
+}
+
+// NEW: Add lab result
+function addLabResult(p) {
+  const html = `
+    <h2>Add Lab Result for ${p.name}</h2>
+    <div style="margin-top:12px">
+      <label>Test Name</label>
+      <input type="text" id="labTestName" placeholder="e.g., Blood Glucose">
+    </div>
+    <div style="margin-top:8px">
+      <label>Result</label>
+      <input type="text" id="labResult" placeholder="e.g., 95 mg/dL">
+    </div>
+    <div style="margin-top:8px">
+      <label>Notes</label>
+      <textarea id="labNotes" style="width:100%;height:80px" placeholder="Additional notes..."></textarea>
+    </div>
+    <div style="margin-top:12px;display:flex;gap:8px">
+      <button class="btn" onclick="saveLabResult('${p.id}')">Save</button>
+      <button class="btn-outline" onclick="closeModal()">Cancel</button>
+    </div>
+  `;
+  openModal(html);
+}
+
+function saveLabResult(patientId) {
+  const p = state.patients.find(x => x.id === patientId);
+  const testName = document.getElementById('labTestName').value;
+  const result = document.getElementById('labResult').value;
+  
+  if (!testName || !result) {
+    alert('Please fill in test name and result');
+    return;
+  }
+  
+  p.labResults.push({
+    testName,
+    result,
+    notes: document.getElementById('labNotes').value,
+    date: new Date().toISOString()
+  });
+  
+  saveState();
+  logActivity(`Added lab result for ${p.name}: ${testName}`);
+  alert(`Lab result for ${testName} recorded successfully`);
+  closeModal();
+}
+
+/* ---------- Edit patient (simulate) ---------- */
+function openEditPatientForm(pid){
+  const p = state.patients.find(x=>x.id===pid);
+  openModal(`
+    <h2>Edit Patient</h2>
+    <div style="margin-top:8px"><label>Name</label><input id="e_name" value="${p.name}" /></div>
+    <div style="margin-top:8px" class="form-row"><div style="flex:1"><label>Age</label><input id="e_age" type="number" value="${p.age}" /></div><div style="flex:1"><label>Contact</label><input id="e_contact" value="${p.contact}" /></div></div>
+    <div style="margin-top:8px"><label>Disease</label><input id="e_disease" value="${p.disease}" /></div>
+    <div style="margin-top:8px"><label>History</label><textarea id="e_history" style="width:100%;height:80px">${p.history}</textarea></div>
+    <div style="margin-top:12px;display:flex;gap:8px"><button id="saveEdit" class="btn">Save</button><button id="cancelEdit" class="btn-outline">Cancel</button></div>
+  `);
+  document.getElementById('cancelEdit').onclick = closeModal;
+  document.getElementById('saveEdit').onclick = ()=>{
+    p.name = document.getElementById('e_name').value.trim() || p.name;
+    p.age = Number(document.getElementById('e_age').value) || p.age;
+    p.contact = document.getElementById('e_contact').value.trim() || p.contact;
+    p.disease = document.getElementById('e_disease').value.trim() || p.disease;
+    p.history = document.getElementById('e_history').value.trim() || p.history;
+    saveState(); renderPatients(); renderAppointments(); closeModal();
+    // refresh profile if open
+    const idInHash = (location.hash.match(/id=([^&]+)/) || [])[1];
+    if(idInHash === pid) renderPatientProfile(pid);
+  };
+}
+
+/* ---------- Router ---------- */
+function renderRoute(){
+  const hash = location.hash || '';
+  if(hash.startsWith('#patient')){
+    const pid = (new URLSearchParams(hash.split('?')[1])).get('id');
+    if(pid) renderPatientProfile(pid);
+  } else {
+    // show dashboard
+    dashboardSection.style.display = 'block';
+    patientPage.style.display = 'none';
+  }
+}
+window.addEventListener('hashchange', renderRoute);
+document.getElementById('backDashboard').onclick = ()=> { location.hash=''; renderRoute(); };
+
+/* ---------- UI events ---------- */
+patientSearch.addEventListener('input', ()=> renderPatients());
+filterDisease.addEventListener('change', ()=> renderPatients());
+sortBy.addEventListener('change', ()=> renderPatients());
+
+document.getElementById('viewAllPatients').addEventListener('click', ()=> { patientSearch.value=''; filterDisease.value=''; renderPatients(); window.scrollTo({top:450,behavior:'smooth'}); });
+document.getElementById('viewAllDoctors').addEventListener('click', ()=> { renderDoctors(); window.scrollTo({top:0,behavior:'smooth'}); });
+
+document.getElementById('exportState').addEventListener('click', ()=>{
+  const data = JSON.stringify(state, null, 2);
+  const blob = new Blob([data],{type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href=url; a.download='demo_state.json'; a.click();
+  URL.revokeObjectURL(url);
+});
+
+document.getElementById('closeModal').addEventListener('click', closeModal);
+
+// NEW: Event listeners for added features
+document.getElementById('notificationsBtn').addEventListener('click', showNotifications);
+document.getElementById('emergencyBtn').addEventListener('click', handleEmergency);
+document.getElementById('medicationBtn').addEventListener('click', showMedicationTracker);
+document.getElementById('analyticsBtn').addEventListener('click', showAnalytics);
+document.getElementById('addPatientBtn').addEventListener('click', () => {
+  document.getElementById('patientBtn').click();
+});
+
+// Chat input enter key support
+document.getElementById('chatInput')?.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter') {
+    const idInHash = (location.hash.match(/id=([^&]+)/) || [])[1];
+    if (idInHash) {
+      const p = state.patients.find(x => x.id === idInHash);
+      if (p) sendChatMessage(p);
+    }
+  }
+});
+
+/* Reset button */
+document.getElementById('resetBtn').addEventListener('click', ()=>{
+  if(confirm('Reset demo to original sample data?')){
+    sessionStorage.removeItem('demoState');
+    state = loadState();
+    renderAll();
+    location.hash = '';
+    renderRoute();
+  }
+});
+
+/* Export state on load if first time */
+function renderAll(){ 
+  renderDoctors(); 
+  populateDiseaseFilter(); 
+  renderPatients(); 
+  renderAppointments();
+  updateStatsOverview();
+  updateNotificationBadge();
+  renderRecentActivity();
+}
+renderAll();
+renderRoute();
+
+/* Expose some functions for modals via global (used inside generated HTML) */
+window.openDoctorForm = openDoctorForm;
+window.openPatientForm = openPatientForm;
+window.openPatientPage = openPatientPage;
+window.bookAppointment = bookAppointment;
+// NEW: Expose added functions
+window.markNotificationRead = markNotificationRead;
+window.clearAllNotifications = clearAllNotifications;
+window.addMedication = addMedication;
+window.removeMedication = removeMedication;
+window.showMedicationTracker = showMedicationTracker;
+window.showAnalytics = showAnalytics;
+
+</script>
 </body>
 </html>
